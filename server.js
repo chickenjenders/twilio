@@ -21,11 +21,20 @@ app.post('/whatsapp', (req, res) => {
 
   let responseMessage;
 
-  // Simple logic based on user input
-  if (userMessage === 'does this work?') {
-    responseMessage = 'Okay, now I can tell it works!';
-  } else {
-    responseMessage = "I didn't understand that. Can you ask 'Does this work?'";
+  // Check if the user is starting a conversation
+  if (!conversationState[from]) {
+    conversationState[from] = 'start'; // Mark the conversation as started
+    responseMessage = 'Do you want to play a game?'; // Initial message
+  }
+  // After the user responds, change the flow
+  else if (conversationState[from] === 'start' && userMessage) {
+    conversationState[from] = 'play'; // Conversation is now in the "play" state
+    responseMessage = "Actually, I don't care what your answer is, let's play!"; // Follow-up message
+  }
+  // After the user responds, end the conversation
+  else if (conversationState[from] === 'play' && userMessage) {
+    conversationState[from] = 'end'; // End the conversation
+    responseMessage = "Nevermind, you're no fun. Bye!"; // End message
   }
 
   // Send a response back to the user
