@@ -36,7 +36,7 @@ app.post('/whatsapp', (req, res) => {
     })
     .then(() => {
       console.log(`Replied to ${from} with: ${responseMessage}`);
-      res.sendStatus(200);  // Acknowledge the Twilio webhook
+      //res.sendStatus(200);  // Acknowledge the Twilio webhook
     })
     .catch(error => {
       console.error('Error sending response:', error);
