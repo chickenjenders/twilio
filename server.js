@@ -10,7 +10,7 @@ const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
 // Initialize Express app
-const app = express();
+const app = express(); ``
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Endpoint to handle incoming WhatsApp messages
