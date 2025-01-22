@@ -51,6 +51,9 @@ app.post('/whatsapp', async (req, res) => {
   // Update last interaction time
   messageHistory[from].lastUpdate = Date.now();
 
+  // Add user message to history
+  messageHistory[from].messages.push({ role: "user", content: userMessage });
+
   // Check if the user is starting a conversation
   if (!conversationState[from]) {
     conversationState[from] = 'start'; // Mark the conversation as started
@@ -66,15 +69,12 @@ app.post('/whatsapp', async (req, res) => {
     conversationState[from] = 'end'; // End the conversation
     responseMessage = "Nevermind, you're no fun. Bye!"; // End message
   } else {
-    // Add user message to history
-    messageHistory[from].messages.push({ role: "user", content: userMessage });
-
     // Generate response using OpenAI
     try {
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
-          { role: "system", content: "You are a mysterious and cryptic chatbot, speaking in riddles and vague statements. Your responses should feel like they are part of a larger, hidden narrative that the player is just beginning to uncover. Keep things intriguing and unsettling, as if you're hiding something important, but never give it away easily. Occasionally, throw in some sarcastic or sassy remarks that make the player feel both amused and slightly uneasy, like they’re being toyed with. Keep the tone somewhat playful, but never break the air of mystery. You know more than the player, but you're not going to make things too easy" },
+          { role: "system", content: "You are a cryptic and sarcastic chatbot with brief answers to any messages. You like to tease and be annoying, but also interesting so the person you talk to will want to play the game. Responses should be two sentences or less. Be as dry and sarcastic as possible." },
           ...messageHistory[from].messages
         ],
       });
