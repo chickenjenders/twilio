@@ -13,34 +13,35 @@ const client = twilio(accountSid, authToken);
 const app = express(); ``
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Endpoint to handle incoming WhatsApp messages
+let conversationState = {};
+
 app.post('/whatsapp', (req, res) => {
-  const userMessage = req.body.Body.trim().toLowerCase(); // Get the user's message
-  const from = req.body.From; // Get the sender's phone number
+  const userMessage = req.body.Body.trim().toLowerCase(); // User's incoming message
+  const from = req.body.From; // Sender's WhatsApp number
 
   let responseMessage;
 
   // Simple logic based on user input
-  if (userMessage === 'Hello') {
-    responseMessage = 'Nevermind, I gotta go. Bye!';
+  if (userMessage === 'does this work?') {
+    responseMessage = 'Okay, now I can tell it works!';
   } else {
     responseMessage = "I didn't understand that. Can you ask 'Does this work?'";
   }
 
-  // Send a response back to the user via WhatsApp
+  // Send a response back to the user
   client.messages
     .create({
-      from: 'whatsapp:+14155238886',  // This is your Twilio sandbox WhatsApp number
-      body: responseMessage,         // The message to send
-      to: from                        // Send to the user who sent the message
+      from: 'whatsapp:+14155238886',
+      body: responseMessage,
+      to: from,
     })
     .then(() => {
       console.log(`Replied to ${from} with: ${responseMessage}`);
-      //res.sendStatus(200);  // Acknowledge the Twilio webhook
+      res.sendStatus(200); // Acknowledge the webhook
     })
     .catch(error => {
       console.error('Error sending response:', error);
-      res.sendStatus(500);  // Error handling if something goes wrong
+      res.sendStatus(500); // Respond with an error status if something goes wrong
     });
 });
 
