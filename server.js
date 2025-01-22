@@ -46,7 +46,7 @@ app.post('/whatsapp', (req, res) => {
     })
     .then(() => {
       console.log(`Replied to ${from} with: ${responseMessage}`);
-      res.sendStatus(200); // Acknowledge the webhook
+      //res.sendStatus(200); // Acknowledge the webhook
     })
     .catch(error => {
       console.error('Error sending response:', error);
