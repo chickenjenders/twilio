@@ -21,8 +21,8 @@ app.post('/whatsapp', (req, res) => {
   let responseMessage;
 
   // Simple logic based on user input
-  if (userMessage === 'does this work?') {
-    responseMessage = 'Okay, now I can tell it works!';
+  if (userMessage === 'Hello') {
+    responseMessage = 'Nevermind, I gotta go. Bye!';
   } else {
     responseMessage = "I didn't understand that. Can you ask 'Does this work?'";
   }
